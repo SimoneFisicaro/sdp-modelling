@@ -1,0 +1,9 @@
+keras
+numpy
+scikit-learn
+mlflow
+yaml
+pillow
+matplotlib
+pandas
+seaborn

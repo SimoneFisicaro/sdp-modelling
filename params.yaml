@@ -1,0 +1,15 @@
+model:
+  base_network: "VGG16"
+  shape: "244:244:3"
+  epochs: 50
+  batch_size: 30
+  train_generator_batch_size: 32
+  validation_generator_batch_size : 32
+  save_model: False
+  workers: 4
+data:
+  root_path: "/Users/simone/Google Drive/UNISTI/master project/data/dataset2/rgb/"
+mlflow:
+  tracking_uri: "file:///Users/simone/mlflow_tracking"
+  temp_path: "/Users/simone/mlflow_tracking/temp_dir"
+  experiment: "sdg"
