@@ -9,6 +9,7 @@ from keras.applications.vgg16 import VGG16
 from keras.metrics import categorical_accuracy, categorical_crossentropy
 from keras.models import Model
 from mlflow import keras
+import logging
 
 
 class Modelling:
@@ -16,15 +17,21 @@ class Modelling:
     def __init__(self, params, generator):
         self.params = params
         self.generator = generator
+        self.logger = logging.getLogger()
 
     def run(self):
+        self.logger.info("Creating base model.")
         base_model = self.load_base_model()
+        self.logger.info("Building model.")
         model = self.build_model(base_model)
+        self.logger.info(str(model.summary()))
 
+        self.logger.info("Creating generators.")
         (train_generator, validation_generator, test_generator, train_generator_class_weight) = \
             self.generator.create_generators()
 
-        result = self.train(
+        self.logger.info("Training.")
+        self.train(
             model,
             base_model,
             train_generator,
@@ -32,6 +39,7 @@ class Modelling:
             train_generator_class_weight
         )
 
+        self.logger.info("Saving model.")
         if self.params['model']['save_model']:
             mlflow.keras.log_model(model, "models")
 

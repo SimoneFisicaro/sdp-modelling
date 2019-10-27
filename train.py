@@ -1,4 +1,8 @@
 import argparse
+import datetime
+import logging
+import time
+from os import path
 
 import mlflow
 import mlflow.keras
@@ -9,16 +13,35 @@ from model.modelling import Modelling
 
 
 def run(params):
+    logger = create_logger(params['logger']['log_folder'], params['logger']['file_prefix'])
     prepare_mlflow(params['mlflow'])
 
     with mlflow.start_run(nested=True):
+        logger.info("Starting training.")
 
         mlflow.keras.autolog()
         mlflow.log_params(params['model'])
+        logger.info("Input parameters: \n{0}".format(params['model']))
 
         generator = DataGenerator(params)
         model = Modelling(params, generator)
         model.run()
+
+
+def create_logger(log_folder, file_prefix):
+    logger = logging.getLogger()
+
+    file_name = file_prefix + datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + '.log'
+
+    logger.setLevel(logging.INFO)
+
+    file_handler = logging.FileHandler(path.join(log_folder, file_name))
+    formatter = logging.Formatter('%(asctime)s : %(levelname)s : %(name)s : %(message)s')
+    file_handler.setFormatter(formatter)
+
+    logger.addHandler(file_handler)
+
+    return logger
 
 
 def load_parameters():

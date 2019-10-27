@@ -13,3 +13,6 @@ mlflow:
   tracking_uri: "file:///Users/simone/mlflow_tracking"
   temp_path: "/Users/simone/mlflow_tracking/temp_dir"
   experiment: "sdp"
+logger:
+  log_folder: "/tmp/"
+  file_prefix: "sdp-"

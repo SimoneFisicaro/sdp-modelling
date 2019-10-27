@@ -1,4 +1,5 @@
 keras
+tensorflow=1.5.0
 numpy
 scikit-learn
 mlflow
@@ -7,3 +8,4 @@ pillow
 matplotlib
 pandas
 seaborn
+jupyter
